@@ -12,10 +12,6 @@ public class MainFrame extends JFrame {
     private Graph graphPanel;
     protected static Mode mode = Mode.ADD_A_VERTEX;
     protected static Algorithm algorithm = null;
-    
-    SidePanel sidepanel = new SidePanel();
-    myCustomPanel CustomPanel = new myCustomPanel();
-    JPanel panel = new JPanel();
 
     static {
         algorithmDisplayLabel = new JLabel();
@@ -42,7 +38,6 @@ public class MainFrame extends JFrame {
         setJMenu();
 
         add(this.graphPanel = new Graph(), BorderLayout.CENTER);
-        this.add(panel, BorderLayout.WEST);
 
         setVisible(true);
 

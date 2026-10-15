@@ -1,5 +1,6 @@
 package visualizer;
 
+import algorithms.AlgorithmSetter;
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;
@@ -8,7 +9,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.*;
 
-import algorithms.*;
 
 public class Graph extends JPanel implements MouseListener {
 
