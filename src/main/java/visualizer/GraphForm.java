@@ -2,6 +2,10 @@ package visualizer;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
+import java.util.List;
+import java.util.Map;
+import static visualizer.MainFrame.algorithm;
+import algorithms.AlgorithmSetter;
 
 import static visualizer.MainFrame.mode;
 
@@ -13,7 +17,7 @@ public class GraphForm extends javax.swing.JFrame {
      * Creates new form GraphForm
      */
     public GraphForm() {
-        FlatDarkLaf.setup(); //for dark mode
+        FlatLightLaf.setup();
         initComponents();
     }
 
@@ -25,169 +29,320 @@ public class GraphForm extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        SidePanel = new javax.swing.JPanel() {
+            @Override
+            protected void paintComponent(java.awt.Graphics g) {
+                java.awt.Graphics2D g2d = (java.awt.Graphics2D) g;
+                g2d.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+
+                // Define your colors (Example: Hex codes)
+                java.awt.Color color1 = java.awt.Color.decode("#FC5C7D");
+                java.awt.Color color2 = java.awt.Color.decode("#6A82FB");
+
+                // Horizontal gradient setup (0, 0 to width, 0)
+                java.awt.GradientPaint gp = new java.awt.GradientPaint(0, 0, color1, getWidth(), getHeight(), color2);
+
+                g2d.setPaint(gp);
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+                super.paintComponent(g);
+            }
+        }
+        ;
+        jLabel3 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         jButton6 = new javax.swing.JButton();
-        graph2 = new visualizer.Graph();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        jButton7 = new javax.swing.JButton();
+        ToggleButtonNone = new javax.swing.JToggleButton();
+        ToggleButtonAddVertex = new javax.swing.JToggleButton();
+        ToggleButtonRemoveVertex = new javax.swing.JToggleButton();
+        ToggleButtonAddEdge = new javax.swing.JToggleButton();
+        ToggleButtonRemoveEdge = new javax.swing.JToggleButton();
+        VertexGraph = new visualizer.Graph();
+        StatusPanel = new javax.swing.JPanel();
+        algorithmDisplayLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("PROG6112_ICE_3_Graph_Visualizer ");
+        setMinimumSize(new java.awt.Dimension(960, 520));
+        setPreferredSize(new java.awt.Dimension(1000, 620));
 
-        jButton1.setText("None");
-        buttonGroup1.add(jButton1);
-        jButton1.addActionListener(this::jButton1ActionPerformed);
+        SidePanel.setOpaque(false);
+        SidePanel.setPreferredSize(new java.awt.Dimension(260, 480));
 
-        jButton2.setText("Add a Vertex");
-        buttonGroup1.add(jButton2);
-        jButton2.addActionListener(this::jButton2ActionPerformed);
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Edge Controls");
 
-        jButton3.setText("Add an Edge");
-        buttonGroup1.add(jButton3);
-        jButton3.addActionListener(this::jButton3ActionPerformed);
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Vertex Controls");
 
-        jButton4.setText("Remove a Vertex");
-        buttonGroup1.add(jButton4);
-        jButton4.addActionListener(this::jButton4ActionPerformed);
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Vertex and Edge Manipulation Controls");
 
-        jButton5.setText("Remove an Edge");
-        buttonGroup1.add(jButton5);
-        jButton5.addActionListener(this::jButton5ActionPerformed);
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Vertex and Edge Visualizer");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jButton6.setBackground(new java.awt.Color(255, 255, 255));
+        jButton6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton6.setForeground(new java.awt.Color(0, 0, 0));
+        jButton6.setText("Run Calculations");
+        jButton6.addActionListener(this::jButton6ActionPerformed);
 
-        jButton6.setText("jButton6");
+        jComboBox1.setBackground(new java.awt.Color(255, 255, 255));
+        jComboBox1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jComboBox1.setForeground(new java.awt.Color(0, 0, 0));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Depth-First Search", "Breadth-First Search", "Dijkstra's Algorithm", "Prim's Algorithm" }));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 13, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(30, 30, 30))
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Algorithms");
+
+        jButton7.setBackground(new java.awt.Color(255, 255, 255));
+        jButton7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton7.setForeground(new java.awt.Color(0, 0, 0));
+        jButton7.setText("Clear Graph");
+        jButton7.addActionListener(this::jButton7ActionPerformed);
+
+        ToggleButtonNone.setBackground(new java.awt.Color(255, 255, 255));
+        buttonGroup1.add(ToggleButtonNone);
+        ToggleButtonNone.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        ToggleButtonNone.setForeground(new java.awt.Color(0, 0, 0));
+        ToggleButtonNone.setText("None");
+        ToggleButtonNone.addActionListener(this::ToggleButtonNoneActionPerformed);
+
+        ToggleButtonAddVertex.setBackground(new java.awt.Color(255, 255, 255));
+        buttonGroup1.add(ToggleButtonAddVertex);
+        ToggleButtonAddVertex.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        ToggleButtonAddVertex.setForeground(new java.awt.Color(0, 0, 0));
+        ToggleButtonAddVertex.setText("Add");
+        ToggleButtonAddVertex.addActionListener(this::ToggleButtonAddVertexActionPerformed);
+
+        ToggleButtonRemoveVertex.setBackground(new java.awt.Color(255, 255, 255));
+        buttonGroup1.add(ToggleButtonRemoveVertex);
+        ToggleButtonRemoveVertex.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        ToggleButtonRemoveVertex.setForeground(new java.awt.Color(0, 0, 0));
+        ToggleButtonRemoveVertex.setText("Remove");
+        ToggleButtonRemoveVertex.addActionListener(this::ToggleButtonRemoveVertexActionPerformed);
+
+        ToggleButtonAddEdge.setBackground(new java.awt.Color(255, 255, 255));
+        buttonGroup1.add(ToggleButtonAddEdge);
+        ToggleButtonAddEdge.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        ToggleButtonAddEdge.setForeground(new java.awt.Color(0, 0, 0));
+        ToggleButtonAddEdge.setText("Add");
+        ToggleButtonAddEdge.addActionListener(this::ToggleButtonAddEdgeActionPerformed);
+
+        ToggleButtonRemoveEdge.setBackground(new java.awt.Color(255, 255, 255));
+        buttonGroup1.add(ToggleButtonRemoveEdge);
+        ToggleButtonRemoveEdge.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        ToggleButtonRemoveEdge.setForeground(new java.awt.Color(0, 0, 0));
+        ToggleButtonRemoveEdge.setText("Remove");
+        ToggleButtonRemoveEdge.addActionListener(this::ToggleButtonRemoveEdgeActionPerformed);
+
+        javax.swing.GroupLayout SidePanelLayout = new javax.swing.GroupLayout(SidePanel);
+        SidePanel.setLayout(SidePanelLayout);
+        SidePanelLayout.setHorizontalGroup(
+            SidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(SidePanelLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(SidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addGroup(SidePanelLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(SidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton6)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel1)
+                            .addGroup(SidePanelLayout.createSequentialGroup()
+                                .addComponent(ToggleButtonAddVertex, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(ToggleButtonRemoveVertex, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(SidePanelLayout.createSequentialGroup()
+                                .addComponent(ToggleButtonAddEdge, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(ToggleButtonRemoveEdge, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(SidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(SidePanelLayout.createSequentialGroup()
+                            .addComponent(ToggleButtonNone, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(28, 28, 28)
+                            .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(53, 53, 53)
-                .addComponent(jButton1)
-                .addGap(40, 40, 40)
-                .addComponent(jButton2)
-                .addGap(27, 27, 27)
-                .addComponent(jButton3)
-                .addGap(28, 28, 28)
-                .addComponent(jButton4)
+        SidePanelLayout.setVerticalGroup(
+            SidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(SidePanelLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(jLabel4)
                 .addGap(18, 18, 18)
-                .addComponent(jButton5)
-                .addGap(30, 30, 30)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(SidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton7)
+                    .addComponent(ToggleButtonNone))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addGroup(SidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ToggleButtonAddVertex)
+                    .addComponent(ToggleButtonRemoveVertex))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addGap(18, 18, 18)
+                .addGroup(SidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ToggleButtonAddEdge)
+                    .addComponent(ToggleButtonRemoveEdge))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel5)
+                .addGap(18, 18, 18)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addGap(18, 18, 18)
                 .addComponent(jButton6)
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addContainerGap(69, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
-                .addComponent(graph2, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+        getContentPane().add(SidePanel, java.awt.BorderLayout.WEST);
+        getContentPane().add(VertexGraph, java.awt.BorderLayout.CENTER);
+
+        StatusPanel.setBackground(new java.awt.Color(108, 130, 250));
+        StatusPanel.setMinimumSize(new java.awt.Dimension(0, 33));
+
+        algorithmDisplayLabel.setText("jLabel6");
+        algorithmDisplayLabel.setMaximumSize(new java.awt.Dimension(120, 16));
+
+        javax.swing.GroupLayout StatusPanelLayout = new javax.swing.GroupLayout(StatusPanel);
+        StatusPanel.setLayout(StatusPanelLayout);
+        StatusPanelLayout.setHorizontalGroup(
+            StatusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(StatusPanelLayout.createSequentialGroup()
+                .addGap(74, 74, 74)
+                .addComponent(algorithmDisplayLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+                .addContainerGap(623, Short.MAX_VALUE))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addComponent(graph2, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        StatusPanelLayout.setVerticalGroup(
+            StatusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StatusPanelLayout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addComponent(algorithmDisplayLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
+
+        getContentPane().add(StatusPanel, java.awt.BorderLayout.SOUTH);
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        int Selection = jComboBox1.getSelectedIndex();
+
+        switch (Selection) {
+            case 0:
+                algorithm = Algorithm.DFS;
+                break;
+            case 1:
+                algorithm = Algorithm.BFS;
+                break;
+            case 2:
+                algorithm = Algorithm.DIJKSTRAS;
+                break;
+            case 3:
+                algorithm = Algorithm.PRIMS;
+                break;
+        }
+        
+        
+        
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+            this.remove(this.VertexGraph);
+            this.repaint();
+            this.revalidate();
+            this.add(this.VertexGraph = new Graph());
+
+            // Clear all the static containers
+            Edge.edges.clear();
+            Vertex.vertices.clear();
+            VertexGraph.edgeVertices.clear();
+            VertexGraph.availableEdges.clear();
+
+            // Change the mode
+            mode = Mode.ADD_A_VERTEX;
+            // Change text for label
+            //changeTextForModeLabel("Current Mode -> " + mode.getDescription());
+            // Switch algorithmDisplayLabel visibility to false and text
+            algorithmDisplayLabel.setVisible(false);
+            algorithmDisplayLabel.setText("Please choose a starting vertex");
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void ToggleButtonNoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ToggleButtonNoneActionPerformed
         // Change the mode
         mode = Mode.NONE;
         // Change text for label
         //changeTextForModeLabel("Current Mode -> " + mode.getDescription());
         // Remove response to previous vertex clicks
-        Graph.edgeVertices.clear();
+        VertexGraph.edgeVertices.clear();
         // Switch algorithmDisplayLabel visibility to false and text
-        //algorithmDisplayLabel.setVisible(false);
-        //algorithmDisplayLabel.setText("Please choose a starting vertex");
-    }//GEN-LAST:event_jButton1ActionPerformed
+        algorithmDisplayLabel.setVisible(false);
+        algorithmDisplayLabel.setText("Please choose a starting vertex");
+    }//GEN-LAST:event_ToggleButtonNoneActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void ToggleButtonAddVertexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ToggleButtonAddVertexActionPerformed
         // Change the mode
         mode = Mode.ADD_A_VERTEX;
         // Change text for label
         //changeTextForModeLabel("Current Mode -> " + mode.getDescription());
         // Remove response to previous vertex clicks
-        Graph.edgeVertices.clear();
+        VertexGraph.edgeVertices.clear();
         // Switch algorithmDisplayLabel visibility to false and text
         //algorithmDisplayLabel.setVisible(false);
-        //algorithmDisplayLabel.setText("Please choose a starting vertex");
-    }//GEN-LAST:event_jButton2ActionPerformed
+        algorithmDisplayLabel.setText("Please choose a starting vertex");
+    }//GEN-LAST:event_ToggleButtonAddVertexActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void ToggleButtonRemoveVertexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ToggleButtonRemoveVertexActionPerformed
+        // Change the mode
+        mode = Mode.REMOVE_A_VERTEX;
+        // Change text for label
+        //changeTextForModeLabel("Current Mode -> " + mode.getDescription());
+        // Remove response to previous vertex clicks
+        VertexGraph.edgeVertices.clear();
+        // Switch algorithmDisplayLabel visibility to false and text
+        //algorithmDisplayLabel.setVisible(false);
+        algorithmDisplayLabel.setText("Please choose a starting vertex");
+    }//GEN-LAST:event_ToggleButtonRemoveVertexActionPerformed
+
+    private void ToggleButtonAddEdgeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ToggleButtonAddEdgeActionPerformed
         // Change the mode
         mode = Mode.ADD_AN_EDGE;
         // Change text for label
         //changeTextForModeLabel("Current Mode -> " + mode.getDescription());
         // Switch algorithmDisplayLabel visibility to false and text
         //algorithmDisplayLabel.setVisible(false);
-        //algorithmDisplayLabel.setText("Please choose a starting vertex");
-    }//GEN-LAST:event_jButton3ActionPerformed
+        algorithmDisplayLabel.setText("Please choose a starting vertex");
+    }//GEN-LAST:event_ToggleButtonAddEdgeActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // Change the mode
-        mode = Mode.REMOVE_A_VERTEX;
-        // Change text for label
-        //changeTextForModeLabel("Current Mode -> " + mode.getDescription());
-        // Remove response to previous vertex clicks
-        Graph.edgeVertices.clear();
-        // Switch algorithmDisplayLabel visibility to false and text
-        //algorithmDisplayLabel.setVisible(false);
-        //algorithmDisplayLabel.setText("Please choose a starting vertex");
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void ToggleButtonRemoveEdgeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ToggleButtonRemoveEdgeActionPerformed
         // Change the mode
         mode = Mode.REMOVE_AN_EDGE;
         // Change text for label
         //changeTextForModeLabel("Current Mode -> " + mode.getDescription());
         // Remove response to previous vertex clicks
-        Graph.edgeVertices.clear();
+        VertexGraph.edgeVertices.clear();
         // Switch algorithmDisplayLabel visibility to false and text
         //algorithmDisplayLabel.setVisible(false);
-        //algorithmDisplayLabel.setText("Please choose a starting vertex");
-    }//GEN-LAST:event_jButton5ActionPerformed
+        algorithmDisplayLabel.setText("Please choose a starting vertex");
+    }//GEN-LAST:event_ToggleButtonRemoveEdgeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -215,15 +370,23 @@ public class GraphForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel SidePanel;
+    private javax.swing.JPanel StatusPanel;
+    private javax.swing.JToggleButton ToggleButtonAddEdge;
+    private javax.swing.JToggleButton ToggleButtonAddVertex;
+    private javax.swing.JToggleButton ToggleButtonNone;
+    private javax.swing.JToggleButton ToggleButtonRemoveEdge;
+    private javax.swing.JToggleButton ToggleButtonRemoveVertex;
+    private visualizer.Graph VertexGraph;
+    private javax.swing.JLabel algorithmDisplayLabel;
     private javax.swing.ButtonGroup buttonGroup1;
-    private visualizer.Graph graph2;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     // End of variables declaration//GEN-END:variables
 }

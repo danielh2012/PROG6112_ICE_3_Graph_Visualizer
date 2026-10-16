@@ -6,12 +6,12 @@ visualizer\Graph.class
 algorithms\DijkstrasAlgorithm.class
 algorithms\PrimsAlgorithm$ChildEdgesInAlphabeticalOrder.class
 visualizer\GraphForm.class
+visualizer\GraphForm$1.class
 algorithms\BFSAlgorithm.class
 algorithms\DFSAlgorithm.class
 visualizer\GraphVisualizer.class
 visualizer\Vertex.class
 visualizer\Mode.class
-visualizer\CustomPanel.class
 algorithms\AlgorithmSetter.class
 algorithms\GraphAlgorithm.class
 visualizer\Algorithm.class
