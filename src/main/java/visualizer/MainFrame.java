@@ -4,8 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainFrame extends JFrame {
-    protected static final int WIDTH = 800;
-    protected static final int HEIGHT = 600;
+    protected static final int WIDTH = 1920;
+    protected static final int HEIGHT = 1080;
     protected static final Color BACKGROUND_COLOR = Color.black;
     private JLabel modeLabel;
     private static final JLabel algorithmDisplayLabel;
@@ -31,7 +31,7 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(MainFrame.WIDTH, MainFrame.HEIGHT);
         setLayout(new BorderLayout());
-        setResizable(false);
+        setResizable(true);
 
         setModeJLabel();
         this.add(algorithmDisplayLabel, BorderLayout.SOUTH);

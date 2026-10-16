@@ -1,6 +1,10 @@
 package visualizer;
 
-import algorithms.*;
+import algorithms.GraphAlgorithm;
+import algorithms.BFSAlgorithm;
+import algorithms.DFSAlgorithm;
+import algorithms.PrimsAlgorithm;
+import algorithms.DijkstrasAlgorithm;
 public enum Algorithm {
 
     BFS(new BFSAlgorithm()),

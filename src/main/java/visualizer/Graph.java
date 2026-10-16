@@ -1,5 +1,6 @@
 package visualizer;
 
+import algorithms.AlgorithmSetter;
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;
@@ -8,7 +9,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.*;
 
-import algorithms.*;
 
 public class Graph extends JPanel implements MouseListener {
 
@@ -17,9 +17,9 @@ public class Graph extends JPanel implements MouseListener {
 
     public Graph() {
         setName("Graph");
-        setBackground(MainFrame.BACKGROUND_COLOR);
+        setBackground(MainFrame.BACKGROUND_COLOR); //default color can be changed externally
         setLayout(null);
-        setSize(MainFrame.WIDTH, MainFrame.HEIGHT);
+        //setSize(MainFrame.WIDTH, MainFrame.HEIGHT); //doesn't seem to do anything
         setLocation(0, 0);
         addMouseListener(this);
     }
